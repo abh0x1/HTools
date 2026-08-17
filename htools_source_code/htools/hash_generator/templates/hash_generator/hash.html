@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 py-12 px-4">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-10">
+
+        <!-- Title -->
+        <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">
+            Hash Generator Tool
+        </h2>
+
+        <!-- Form -->
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Text Input -->
+            <div>
+                <label class="block font-medium text-gray-700 mb-2">
+                    Enter Text
+                </label>
+                <textarea name="text" rows="4"
+                    class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    placeholder="Enter text here..." required></textarea>
+            </div>
+
+            <!-- Algorithm Select -->
+            <div>
+                <label class="block font-medium text-gray-700 mb-2">
+                    Select Algorithm
+                </label>
+                <select name="algorithm"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    required>
+                    <option value="md5">MD5</option>
+                    <option value="sha1">SHA1</option>
+                    <option value="sha256">SHA256</option>
+                    <option value="sha512">SHA512</option>
+                </select>
+            </div>
+
+            <!-- Submit -->
+            <div class="text-center">
+                <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition">
+                    Generate Hash
+                </button>
+
+                <a href="{% url 'home:dashboard' %}"
+                    class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition"> Back to Dashboard
+                </a>
+            </div>
+        </form>
+
+        <!-- Result Section -->
+        {% if hash_result %}
+        <div class=" mt-10 bg-blue-50 rounded-xl p-8 shadow-inner">
+
+            <h3 class="text-xl font-semibold text-blue-700 mb-4">
+                Generated Hash ({{ selected_algo|upper }})
+            </h3>
+
+            <textarea rows="4" class="w-full p-4 border border-blue-200 rounded-lg bg-white text-gray-800"
+                readonly>{{ hash_result }}</textarea>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col md:flex-row gap-4 justify-center mt-6">
+
+                <button onclick="window.print()"
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Print
+                </button>
+
+                <button onclick="navigator.clipboard.writeText('{{ hash_result }}')"
+                    class="bg-gray-700 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition">
+                    Copy
+                </button>
+
+                <a href="{% url 'home:dashboard' %}"
+                    class="bg-white border border-blue-600 text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-50 transition text-center">
+                    Back to Dashboard
+                </a>
+
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Error -->
+        {% if error %}
+        <div class="mt-6 bg-red-100 text-red-700 p-4 rounded-lg text-center">
+            {{ error }}
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+{% endblock %}

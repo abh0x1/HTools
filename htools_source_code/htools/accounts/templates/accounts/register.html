@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen">
+    <form method="post" class="bg-white p-6 rounded shadow w-80">
+        {% csrf_token %}
+        <h2 class="text-xl font-bold mb-4 text-center">Register</h2>
+
+        {% for message in messages %}
+        <p class="text-red-500 text-sm">{{ message }}</p>
+        {% endfor %}
+
+        <input type="text" name="username" placeholder="Username" class="w-full border p-2 mb-3 rounded" required>
+
+        <input type="email" name="email" placeholder="Email" class="w-full border p-2 mb-3 rounded" required>
+
+        <input type="password" name="password" placeholder="Password" class="w-full border p-2 mb-3 rounded" required>
+
+        <input type="password" name="password2" placeholder="Confirm Password" class="w-full border p-2 mb-3 rounded"
+            required>
+
+        <button class="w-full bg-blue-600 text-white p-2 rounded">Register</button>
+
+        <p class="text-sm mt-2 text-center">
+            Already have an account? <a href="{% url 'accounts:login' %}" class="text-blue-600">Login</a>
+        </p>
+    </form>
+</div>
+{% endblock %}

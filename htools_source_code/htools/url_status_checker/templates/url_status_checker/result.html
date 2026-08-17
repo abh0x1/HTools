@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="max-w-4xl mx-auto px-6 py-14">
+
+    <!-- Heading -->
+    <div class="mb-10">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">
+            URL Status Results
+        </h2>
+        <p class="text-gray-500 text-sm">
+            Below are the checked URLs and their response status.
+        </p>
+    </div>
+
+    <!-- Results Card -->
+    <div class="bg-white border rounded-xl p-8 shadow-sm">
+
+        {% if results %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left border-collapse">
+                <thead>
+                    <tr class="border-b bg-gray-50">
+                        <th class="py-3 px-4 font-medium text-gray-600">URL & Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in results %}
+                    <tr class="border-b hover:bg-gray-50 transition">
+                        <td class="py-3 px-4 text-gray-700">
+                            {{ r }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-gray-500 text-sm">
+            No URLs checked.
+        </p>
+        {% endif %}
+
+        <!-- Action Buttons -->
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+
+            <a href="{% url 'url_status_checker:url_index' %}"
+                class="flex-1 text-center bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">
+                Check More URLs
+            </a>
+
+            <button onclick="window.print()"
+                class="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+                Print Results
+            </button>
+
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-10">
+        <a href="{% url 'home:dashboard' %}" class="text-indigo-600 hover:underline text-sm">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+</section>
+{% endblock %}

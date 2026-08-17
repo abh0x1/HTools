@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 py-12 px-4">
+
+    <div class="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-10">
+
+        <!-- Title -->
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">
+            Social Media Account Finder
+        </h2>
+
+        <!-- Back -->
+        <a href="{% url 'home:dashboard' %}" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+            ← Back to Dashboard
+        </a>
+
+        <br>
+        <br>
+
+        <!-- Search Form -->
+        <form method="POST" class="flex flex-col md:flex-row gap-4 mb-10">
+            {% csrf_token %}
+
+            <input type="text" name="username" placeholder="Enter Username"
+                class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                required>
+
+            <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                Search
+            </button>
+        </form>
+
+        {% if results %}
+        <div class="bg-blue-50 rounded-xl p-8 shadow-inner">
+
+            <h3 class="text-xl font-semibold text-blue-700 mb-6">
+                Results for "{{ username }}"
+            </h3>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border border-blue-200 rounded-lg overflow-hidden">
+                    <thead class="bg-blue-600 text-white">
+                        <tr>
+                            <th class="p-3">Platform</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3">Profile Link</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-blue-100">
+
+                        {% for site, data in results.items %}
+                        <tr class="hover:bg-blue-50 transition">
+                            <td class="p-3 font-medium text-gray-800">
+                                {{ site }}
+                            </td>
+
+                            <td class="p-3">
+                                {% if data.status == "Found" %}
+                                <span class="text-green-600 font-semibold">
+                                    Found
+                                </span>
+                                {% else %}
+                                <span class="text-red-500 font-semibold">
+                                    Not Found
+                                </span>
+                                {% endif %}
+                            </td>
+
+                            <td class="p-3">
+                                {% if data.status == "Found" %}
+                                <a href="{{ data.url }}" target="_blank"
+                                    class="text-blue-600 hover:text-blue-800 underline">
+                                    Visit Profile
+                                </a>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-8 flex flex-col md:flex-row gap-4 justify-center">
+
+                <button onclick="window.print()"
+                    class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                    Print Report
+                </button>
+
+                <a href="{% url 'home:dashboard' %}"
+                    class="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition text-center">
+                    Back to Dashboard
+                </a>
+
+            </div>
+
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
